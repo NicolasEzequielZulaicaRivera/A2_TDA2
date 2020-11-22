@@ -210,8 +210,19 @@ void pruebas_insertar(){
 
 
 
-  arbol_borrar( abb, &num[0] );
-  mostrar_int_inorder(abb->nodo_raiz);
+  arbol_borrar( abb, &num[4] );//         3     |
+  arbol_borrar( abb, &num[2] );//       /  \    |
+  arbol_borrar( abb, &num[7] );//      1   6    |
+  arbol_borrar( abb, &num[0] );//      \  /     |
+  arbol_insertar( abb, &num[2] );//    2 5      |
+
+  pa2m_afirmar(
+    *(int*)abb->nodo_raiz->elemento  == 3 &&
+    *(int*)abb->nodo_raiz->izquierda->elemento  == 1 &&
+    *(int*)abb->nodo_raiz->derecha->elemento  == 6 &&
+    *(int*)abb->nodo_raiz->izquierda->derecha->elemento  == 2 &&
+    *(int*)abb->nodo_raiz->derecha->izquierda->elemento  == 5
+  ,"arbol_borrar");
 
   arbol_destruir( abb );
 }

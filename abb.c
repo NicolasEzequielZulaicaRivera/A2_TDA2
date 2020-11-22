@@ -78,7 +78,7 @@ void nodo_borrar( nodo_abb_t** nodo ){
     return;
   }
   while( (*sucesor)->derecha ){
-    (*sucesor) = (*sucesor)->derecha;
+    sucesor = &(*sucesor)->derecha;
   }
   (*nodo) = (*sucesor);
   (*sucesor) = (*sucesor)->izquierda;
@@ -98,7 +98,7 @@ void nodo_borrar( nodo_abb_t** nodo ){
  int arbol_borrar_recursivo(abb_t* arbol, void* elemento, nodo_abb_t** nodo){
 
    if(!arbol || !arbol->comparador) return FALLO;
-   if(!nodo) return FALLO;
+   if(!nodo || !*nodo) return FALLO;
 
    if( !(arbol->comparador)( elemento , (*nodo)->elemento ) ){
 
