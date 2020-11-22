@@ -5,11 +5,11 @@ FLAGS = -Wall -Werror -Wconversion -std=c99
 clear:
 	clear
 
-lista: $(FILES)
+abb: $(FILES)
 	$(CC) $(FILES) $(FLAGS) -o abb
 
 run: abb
-	./lista
+	./abb
 
 minipruebas: abb
 		valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./lista minipruebas
@@ -17,5 +17,5 @@ minipruebas: abb
 zip:
 	zip A2_TDA1.zip *.c *.h *.pdf *.md makefile
 
-check: lista
-	valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./lista
+check: abb
+	valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./abb
