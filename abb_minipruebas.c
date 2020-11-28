@@ -183,7 +183,7 @@ void mostrar_int_inorder( nodo_abb_t* nodo ){
   mostrar_int_inorder( nodo->derecha );
 }
 
-void pruebas_insertar(){
+void pruebas_caja_blanca(){
 
   abb_t* abb = arbol_crear(comparar_int, NULL);
 
@@ -227,6 +227,127 @@ void pruebas_insertar(){
   arbol_destruir( abb );
 }
 
+void pruebas_funcionamiento(){
+
+  abb_t* abb = arbol_crear(comparar_int, NULL);
+
+  int num[10];
+  for(int i=0;i<10;i++) num[i]=i;
+
+  arbol_insertar( abb, &num[4] );//      4      |
+  arbol_insertar( abb, &num[2] );//    /  \     |
+  arbol_insertar( abb, &num[6] );//   2   6     |
+  arbol_insertar( abb, &num[1] );//  /\  /\     |
+  arbol_insertar( abb, &num[3] );// 1 3 5 7     |
+  arbol_insertar( abb, &num[5] );
+  arbol_insertar( abb, &num[7] );
+
+  bool correcto = true;
+  nodo_abb_t* aux;
+
+  // elementos que deben estar
+  for(int i=1;i<=7;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = correcto && !abb->comparador( aux, &num[i] );
+    else correcto = false;
+  }
+  // elementos que no deben estar
+  for(int i=8;i<10;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = false;
+  }
+  aux = arbol_buscar( abb, &num[0] );
+  if( aux ) correcto = false;
+
+  pa2m_afirmar(correcto,"buscar elementos tras insertar");
+
+
+  arbol_borrar( abb, &num[4] );//         3     |
+  arbol_borrar( abb, &num[2] );//       /  \    |
+  arbol_borrar( abb, &num[7] );//      1   6    |
+  arbol_borrar( abb, &num[0] );//      \  /     |
+  arbol_insertar( abb, &num[2] );//    2 5      |
+
+  // elementos que deben estar
+  for(int i=1;i<=3;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = correcto && !abb->comparador( aux, &num[i] );
+    else correcto = false;
+  }
+  for(int i=5;i<=6;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = correcto && !abb->comparador( aux, &num[i] );
+    else correcto = false;
+  }
+  // elementos que no deben estar
+  for(int i=7;i<10;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = false;
+  }
+  aux = arbol_buscar( abb, &num[0] );
+  if( aux ) correcto = false;
+  aux = arbol_buscar( abb, &num[4] );
+  if( aux ) correcto = false;
+
+
+  pa2m_afirmar(correcto,"buscar elementos tras borrar");
+
+  arbol_destruir( abb );
+}
+
+void pruebas_recorrido(){
+
+  abb_t* abb = arbol_crear(comparar_int, NULL);
+
+  int num[10];
+  for(int i=0;i<10;i++) num[i]=i;
+
+  arbol_insertar( abb, &num[4] );//      4      |
+  arbol_insertar( abb, &num[2] );//    /  \     |
+  arbol_insertar( abb, &num[6] );//   2   6     |
+  arbol_insertar( abb, &num[1] );//  /\  /\     |
+  arbol_insertar( abb, &num[3] );// 1 3 5 7     |
+  arbol_insertar( abb, &num[5] );
+  arbol_insertar( abb, &num[7] );
+
+  bool correcto = true;
+  size_t tamanio;
+
+  int* array[10];
+  for( int i=0; i<10; i++ ){
+    array[i] = &num[0];
+  }
+
+  tamanio = arbol_recorrido_inorden( abb , (void**)array, 10);
+
+  for( int i=0; i<7; i++ )
+    correcto = correcto && ( *array[i] == i+1 );
+  for( int i=7; i<10; i++ )
+    correcto = correcto && ( *array[i] == 0 );
+
+  correcto = correcto && tamanio==7;
+
+  pa2m_afirmar(correcto,"Recorrido Inorden");
+
+  for( int i=0; i<10; i++ ){
+    array[i] = &num[0];
+  }
+
+  tamanio = arbol_recorrido_inorden( abb , (void**)array, 4);
+
+  for( int i=0; i<4; i++ )
+    correcto = correcto && ( *array[i] == i+1 );
+  for( int i=4; i<10; i++ )
+    correcto = correcto && ( *array[i] == 0 );
+
+  correcto = correcto && tamanio==4;
+
+  pa2m_afirmar(correcto,"Recorrido Inorden ( Array Insuficiente ) ");
+
+  arbol_destruir( abb );
+}
+
+
 int main(int argc, char const *argv[]){
 
   if( argc == 2 && !strcmp( argv[1], "minipruebas" ) ){
@@ -234,7 +355,13 @@ int main(int argc, char const *argv[]){
   } else {
 
     pa2m_nuevo_grupo("PRUEBAS DE CAJA BLANCA");
-    pruebas_insertar();
+    pruebas_caja_blanca();
+
+    pa2m_nuevo_grupo("PRUEBAS DE FUNCIONAMIENTO");
+    pruebas_funcionamiento();
+
+    pa2m_nuevo_grupo("PRUEBAS DE RECORRIDO");
+    pruebas_recorrido();
   }
   printf("\n");
   return 0;

@@ -1,4 +1,5 @@
 #include "abb.h"
+#include <stdio.h>
 
 const int EXITO =  0;
 const int FALLO = -1;
@@ -121,13 +122,33 @@ int arbol_borrar(abb_t* arbol, void* elemento){
 }
 
 /*
- * Busca en el arbol un elemento igual al provisto (utilizando la
- * funcion de comparación).
- *
- * Devuelve el elemento encontrado o NULL si no lo encuentra.
- */
+  * Busca en el arbol un elemento igual al provisto (utilizando la
+  * funcion de comparación).
+  *
+  * Devuelve el elemento encontrado o NULL si no lo encuentra.
+  */
+void* arbol_buscar_recursivo(abb_t* arbol, void* elemento, nodo_abb_t* nodo  ){
+
+  if( !arbol ) return NULL;
+  if( !nodo ) return NULL;
+  if( !elemento ) return NULL;
+
+  int comparacion = (arbol->comparador)( elemento, nodo->elemento );
+
+  switch (comparacion) {
+    case 0: return elemento;
+
+    case 1: return arbol_buscar_recursivo( arbol, elemento, nodo->derecha );
+
+    case -1: return arbol_buscar_recursivo( arbol, elemento, nodo->izquierda );
+  }
+
+  return NULL;
+}
+
 void* arbol_buscar(abb_t* arbol, void* elemento){
-  return 0;
+
+  return arbol_buscar_recursivo( arbol, elemento, arbol->nodo_raiz );
 }
 
 void* arbol_raiz(abb_t* arbol){
@@ -154,8 +175,31 @@ bool arbol_vacio(abb_t* arbol){
  * llena hasta donde puede y devuelve la cantidad de elementos que
  * pudo poner).
  */
+ void arbol_recorrido_inorden_recursivo(abb_t* arbol, void** array, size_t tamanio_array, nodo_abb_t* nodo , size_t* tamanio ){
+
+   if( !arbol ) return;
+   if( !array ) return;
+   if( !nodo ) return;
+   if( *tamanio >= tamanio_array-1 ) return;
+
+   arbol_recorrido_inorden_recursivo( arbol, array, tamanio_array, nodo->izquierda, tamanio );
+
+   array[ *tamanio ] = nodo->elemento;
+   (*tamanio) ++;
+
+   arbol_recorrido_inorden_recursivo( arbol, array, tamanio_array, nodo->derecha, tamanio );
+ }
+
 size_t arbol_recorrido_inorden(abb_t* arbol, void** array, size_t tamanio_array){
-  return 0;
+
+  if( !arbol ) return 0;
+  if( !array ) return 0;
+
+  size_t tamanio = 0;
+
+  arbol_recorrido_inorden_recursivo( arbol, array, tamanio_array, arbol->nodo_raiz , &tamanio );
+
+  return tamanio;
 }
 
 /*
