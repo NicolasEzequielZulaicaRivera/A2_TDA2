@@ -180,10 +180,10 @@ bool arbol_vacio(abb_t* arbol){
    if( !arbol ) return;
    if( !array ) return;
    if( !nodo ) return;
-   if( *tamanio >= tamanio_array-1 ) return;
 
    arbol_recorrido_inorden_recursivo( arbol, array, tamanio_array, nodo->izquierda, tamanio );
 
+   if( *tamanio >= tamanio_array ) return;
    array[ *tamanio ] = nodo->elemento;
    (*tamanio) ++;
 
@@ -210,8 +210,30 @@ size_t arbol_recorrido_inorden(abb_t* arbol, void** array, size_t tamanio_array)
  * llena hasta donde puede y devuelve la cantidad de elementos que
  * pudo poner).
  */
+ void arbol_recorrido_preorden_recursivo(abb_t* arbol, void** array, size_t tamanio_array, nodo_abb_t* nodo , size_t* tamanio ){
+
+   if( !arbol ) return;
+   if( !array ) return;
+   if( !nodo ) return;
+
+   if( *tamanio >= tamanio_array ) return;
+   array[ *tamanio ] = nodo->elemento;
+   (*tamanio) ++;
+
+   arbol_recorrido_preorden_recursivo( arbol, array, tamanio_array, nodo->izquierda, tamanio );
+
+   arbol_recorrido_preorden_recursivo( arbol, array, tamanio_array, nodo->derecha, tamanio );
+ }
+
 size_t arbol_recorrido_preorden(abb_t* arbol, void** array, size_t tamanio_array){
-  return 0;
+  if( !arbol ) return 0;
+  if( !array ) return 0;
+
+  size_t tamanio = 0;
+
+  arbol_recorrido_preorden_recursivo( arbol, array, tamanio_array, arbol->nodo_raiz , &tamanio );
+
+  return tamanio;
 }
 
 /*
@@ -222,8 +244,30 @@ size_t arbol_recorrido_preorden(abb_t* arbol, void** array, size_t tamanio_array
  * llena hasta donde puede y devuelve la cantidad de elementos que
  * pudo poner).
  */
+ void arbol_recorrido_postorden_recursivo(abb_t* arbol, void** array, size_t tamanio_array, nodo_abb_t* nodo , size_t* tamanio ){
+
+   if( !arbol ) return;
+   if( !array ) return;
+   if( !nodo ) return;
+
+   arbol_recorrido_postorden_recursivo( arbol, array, tamanio_array, nodo->izquierda, tamanio );
+
+   arbol_recorrido_postorden_recursivo( arbol, array, tamanio_array, nodo->derecha, tamanio );
+
+   if( *tamanio >= tamanio_array ) return;
+   array[ *tamanio ] = nodo->elemento;
+   (*tamanio) ++;
+ }
+
 size_t arbol_recorrido_postorden(abb_t* arbol, void** array, size_t tamanio_array){
-  return 0;
+  if( !arbol ) return 0;
+  if( !array ) return 0;
+
+  size_t tamanio = 0;
+
+  arbol_recorrido_postorden_recursivo( arbol, array, tamanio_array, arbol->nodo_raiz , &tamanio );
+
+  return tamanio;
 }
 
 

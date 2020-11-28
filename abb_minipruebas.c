@@ -314,9 +314,7 @@ void pruebas_recorrido(){
   size_t tamanio;
 
   int* array[10];
-  for( int i=0; i<10; i++ ){
-    array[i] = &num[0];
-  }
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
 
   tamanio = arbol_recorrido_inorden( abb , (void**)array, 10);
 
@@ -329,9 +327,7 @@ void pruebas_recorrido(){
 
   pa2m_afirmar(correcto,"Recorrido Inorden");
 
-  for( int i=0; i<10; i++ ){
-    array[i] = &num[0];
-  }
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
 
   tamanio = arbol_recorrido_inorden( abb , (void**)array, 4);
 
@@ -343,6 +339,87 @@ void pruebas_recorrido(){
   correcto = correcto && tamanio==4;
 
   pa2m_afirmar(correcto,"Recorrido Inorden ( Array Insuficiente ) ");
+
+
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
+
+  tamanio = arbol_recorrido_preorden( abb , (void**)array, 10);
+
+  pa2m_afirmar(
+      *array[0]==4 &&
+      *array[1]==2 &&
+      *array[2]==1 &&
+      *array[3]==3 &&
+      *array[4]==6 &&
+      *array[5]==5 &&
+      *array[6]==7 &&
+      *array[7]==0 &&
+      *array[8]==0 &&
+      *array[9]==0
+  ,"Recorrido Preorden ");
+
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
+
+  tamanio = arbol_recorrido_preorden( abb , (void**)array, 4);
+
+  pa2m_afirmar(
+      *array[0]==4 &&
+      *array[1]==2 &&
+      *array[2]==1 &&
+      *array[3]==3 &&
+      *array[4]==0 &&
+      *array[5]==0 &&
+      *array[6]==0 &&
+      *array[7]==0 &&
+      *array[8]==0 &&
+      *array[9]==0
+  ,"Recorrido Preorden ( Array Insuficiente ) ");
+
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
+
+  tamanio = arbol_recorrido_postorden( abb , (void**)array, 10);
+
+  pa2m_afirmar(
+      *array[0]==1 &&
+      *array[1]==3 &&
+      *array[2]==2 &&
+      *array[3]==5 &&
+      *array[4]==7 &&
+      *array[5]==6 &&
+      *array[6]==4 &&
+      *array[7]==0 &&
+      *array[8]==0 &&
+      *array[9]==0
+  ,"Recorrido Postorden ");
+
+  for( int i=0; i<10; i++ ) array[i] = &num[0];
+
+  tamanio = arbol_recorrido_postorden( abb , (void**)array, 4);
+
+  pa2m_afirmar(
+      *array[0]==1 &&
+      *array[1]==3 &&
+      *array[2]==2 &&
+      *array[3]==5 &&
+      *array[4]==0 &&
+      *array[5]==0 &&
+      *array[6]==0 &&
+      *array[7]==0 &&
+      *array[8]==0 &&
+      *array[9]==0
+  ,"Recorrido Postorden ( Array Insuficiente ) ");
+
+  /*
+  for( size_t j = 0; j<10; j++ ){
+    printf("\n %lu: ",j);
+    for( int i=0; i<10; i++ ) array[i] = &num[0];
+    tamanio = arbol_recorrido_postorden( abb , (void**)array, j);
+    for( int i=0; i<10; i++ )
+      printf("%i ",*array[i]);
+  }
+  */
+
+
 
   arbol_destruir( abb );
 }
