@@ -12,7 +12,7 @@ run: abb
 	./abb
 
 minipruebas: abb
-		valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./lista minipruebas
+		valgrind --leak-check=full --track-origins=yes --show-reachable=yes ./abb minipruebas
 
 zip:
 	zip A2_TDA1.zip *.c *.h *.pdf *.md makefile

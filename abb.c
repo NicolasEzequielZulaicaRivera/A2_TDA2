@@ -305,6 +305,41 @@ void arbol_destruir(abb_t* arbol){
  * y ABB_RECORRER_POSTORDEN.
  * Devuelve la cantidad de elementos que fueron recorridos.
 */
+void abb_con_cada_elemento_recursivo(abb_t* arbol, int recorrido, bool (*funcion)(void*, void*),
+  void* extra, nodo_abb_t* nodo, size_t* tamanio, bool* corte){
+  if(!nodo)return;
+
+  if( recorrido==ABB_RECORRER_PREORDEN ){
+    if( *corte ) return;
+    *corte = funcion( nodo->elemento, extra );
+    (*tamanio)++;
+  }
+  abb_con_cada_elemento_recursivo( arbol, recorrido, funcion, extra, nodo->izquierda, tamanio, corte );
+
+  if( recorrido==ABB_RECORRER_INORDEN ){
+    if( *corte ) return;
+    *corte = funcion( nodo->elemento, extra );
+    (*tamanio)++;
+  }
+  abb_con_cada_elemento_recursivo( arbol, recorrido, funcion, extra, nodo->derecha, tamanio, corte );
+
+  if( recorrido==ABB_RECORRER_POSTORDEN ){
+    if( *corte ) return;
+    *corte = funcion( nodo->elemento, extra );
+    (*tamanio)++;
+  }
+}
+
 size_t abb_con_cada_elemento(abb_t* arbol, int recorrido, bool (*funcion)(void*, void*), void* extra){
-  return 0;
+
+  if( !arbol ) return 0;
+  if( recorrido!=ABB_RECORRER_INORDEN && recorrido!=ABB_RECORRER_PREORDEN && recorrido!=ABB_RECORRER_POSTORDEN ) return 0;
+  if( !funcion ) return 0;
+
+  size_t tamanio = 0;
+  bool corte = false;
+
+  abb_con_cada_elemento_recursivo( arbol, recorrido, funcion, extra, arbol->nodo_raiz, &tamanio, &corte );
+
+  return tamanio;
 }
