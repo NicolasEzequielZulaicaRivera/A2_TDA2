@@ -231,6 +231,8 @@ void pruebas_funcionamiento(){
 
   abb_t* abb = arbol_crear(comparar_int, NULL);
 
+  pa2m_afirmar(arbol_vacio(abb),"arbol_vacio (vacio)");
+
   int num[10];
   for(int i=0;i<10;i++) num[i]=i;
 
@@ -241,6 +243,9 @@ void pruebas_funcionamiento(){
   arbol_insertar( abb, &num[3] );// 1 3 5 7     |
   arbol_insertar( abb, &num[5] );
   arbol_insertar( abb, &num[7] );
+
+  pa2m_afirmar(!arbol_vacio(abb),"arbol_vacio (no vacio)");
+  pa2m_afirmar( arbol_raiz(abb)==&num[4] ,"arbol_raiz");
 
   bool correcto = true;
   nodo_abb_t* aux;
