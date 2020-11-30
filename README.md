@@ -48,7 +48,7 @@ Implementando la funcion de destruccion, el usuario solo necesita eliminarlo del
 
 `arbol_crear`: **O(1)**, la funcion reservara memoria para el arbol, independiente del tamaño del arbol
 
-`arbol_insertar`: *O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que intertar un elemento al final, por lo que habra que recorrer todos los elementos.
+`arbol_insertar`: **O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que intertar un elemento al final, por lo que habra que recorrer todos los elementos.
 para un arbol balanceado la complejidad es O(logN)
 
 `arbol_borrar`: **O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que eliminar un elemento al final, por lo que habra que recorrer todos los elementos.
