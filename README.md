@@ -46,20 +46,20 @@ Implementando la funcion de destruccion, el usuario solo necesita eliminarlo del
 
 ## ¿Cuál es la complejidad de las diferentes operaciones del ABB? Justifique.
 
-`arbol_crear`: O(1), la funcion reservara memoria para el arbol, independiente del tamaño del arbol
+`arbol_crear`: **O(1)**, la funcion reservara memoria para el arbol, independiente del tamaño del arbol
 
-`arbol_insertar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que intertar un elemento al final, por lo que habra que recorrer todos los elementos.
+`arbol_insertar`: *O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que intertar un elemento al final, por lo que habra que recorrer todos los elementos.
 para un arbol balanceado la complejidad es O(logN)
 
-`arbol_borrar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que eliminar un elemento al final, por lo que habra que recorrer todos los elementos.
+`arbol_borrar`: **O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que eliminar un elemento al final, por lo que habra que recorrer todos los elementos.
 para un arbol balanceado la complejidad es O(logN)
 
-`arbol_buscar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que buscar un elemento al final, por lo que habra que recorrer todos los elementos.
+`arbol_buscar`: **O(N)**, el peor caso sera cuando el arbol se degenere como una lista y halla que buscar un elemento al final, por lo que habra que recorrer todos los elementos.
 para un arbol balanceado la complejidad es O(logN)
 
-`arbol_raiz`: O(1), devuelve el primer elemento, al que accede de manera directa, independiente del tamaño del arbol
+`arbol_raiz`: **O(1)**, devuelve el primer elemento, al que accede de manera directa, independiente del tamaño del arbol
 
-`arbol_vacio`: O(1), comprueba que exista el primer elemnto, al que accede de manera directa, independiente del tamaño del arbol 
+`arbol_vacio`: **O(1)**, comprueba que exista el primer elemnto, al que accede de manera directa, independiente del tamaño del arbol 
 
-recorrer arbol: O(N), para recorrer el arbol debe pasar por cada uno de sus elementos
+_recorrer arbol_: **O(N)**, para recorrer el arbol debe pasar por cada uno de sus elementos
 
