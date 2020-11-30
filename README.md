@@ -1,6 +1,16 @@
-# Arbol Binario
+# Arbol Binario de Busqueda
 
 ## Funcionamiento
+
+Se crea la libreria **abb.h** con el objetivo de implementar el tipo de dato abstracto **Arbol Binario de Busqueda**
+
+ Se define la estructura `abb_t` que actuara en conjunto con los metodos definidos en la libreria para implementar las funcionalidades esperadas de dicho TDA
+ 
+ **Importante :** Las funciones implementadas reservan *memoria dinamica* para la utilizacion de las estructuras, por lo que es imperativo que esta se libere antes de finalizar el programa.
+  Esto se realiza mediante el uso de la funcion `arbol_destruir` para cualquier arbol creado y mediante la correcta definicion del destructor de elementos.
+
+  Se añade el archivo **minipruebas.c** como ejemplo de implementacion de la libreria tanto como para verificar su correcto funcionamiento.
+
 
 ## Compilacion y Ejecution
 
@@ -24,99 +34,32 @@
 
 ## Explicar qué es un ABB y cómo se diferencia de un Árbol Binario.
 
+Un arbol binario es una esctructura de datos donde cada elemento tendra una refereencia a hasta otros dos elementos ( izquierda y derecha ), que seran llamados sus hijos.
+Un ABB ( Arbol Binario de Busqueda ) es un tipo de arbol binario que cumple la condicion de estar ordenado, 
+de manera que todos los nodos a la derecha de un nodo cumpliran cierta condicion al compararlos ( eg. ser mayores ) y los que no iran a la izquierda. 
+
 ## Explicar cuál es el objetivo de tener una función de destrucción en el TDA y qué implicaría para el usuario no tenerla.
+
+El objetivo de la funcion de destruccion es facilitar la liberacion de memoria dinamica que el usuario debe hacer. 
+Sin ella el usuario deberia buscar el elemento que quiera eliminar, guardar una referencia, eliminarlo del arbol y luego liberar la referencia.
+Implementando la funcion de destruccion, el usuario solo necesita eliminarlo del arbol y la funcion liberara la memoria, simplificando el proceso.
 
 ## ¿Cuál es la complejidad de las diferentes operaciones del ABB? Justifique.
 
----
+`arbol_crear`: O(1), la funcion reservara memoria para el arbol, independiente del tamaño del arbol
 
-## Funcionamiento
+`arbol_insertar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que intertar un elemento al final, por lo que habra que recorrer todos los elementos.
+para un arbol balanceado la complejidad es O(logN)
 
-  Se crea la libreria **lista.h** con el objetivo de implementar los tipos de datos abstractos **Lista simplemente enlazada** , **Pila** y **Cola**
-  
-  Se define la estructura `lista_t`, capaz de funcionar como cualquiera de los tres tipos. Ademas se incluye la estructura `lista_iterador` como iterador externo y la funcion  `lista_con_cada_elemento` como iterador interno para recorrer la lista.
-  
-  ### Lista simplemente enlazada
-  
-  Este tipo de dato nos permite almacenar diferentes elementos de manera ordenada, acceder a ellos y eliminarlos de la estructura sin ninguna restriccion.
-  
-  ### Pila
-  
-  Este tipo de dato nos permite almacenar diferentes elementos de manera ordenada, acceder a ellos y eliminarlos de la estructura.
-  Se caracteriza por su sistema LIFO (last in, first out), es decir, solo tendremos acceso al elemento insertado con menor antiguedad.
-  
-  ### Cola
-  Este tipo de dato nos permite almacenar diferentes elementos de manera ordenada, acceder a ellos y eliminarlos de la estructura.
-  Se caracteriza por su sistema FIFO (first in, first out), es decir, solo tendremos acceso al elemento insertado con mayor antiguedad.
+`arbol_borrar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que eliminar un elemento al final, por lo que habra que recorrer todos los elementos.
+para un arbol balanceado la complejidad es O(logN)
 
-  **Importante :** Las funciones implementadas reservan *memoria dinamica* para la utilizacion de las estructuras, por lo que es imperativo que esta se libere antes de finalizar el programa.
-  Esto se realiza mediante el uso de las funciones `lista_destruir`. Ademas, cualquier memoria reservada por el usuario queda a su discrecion y responsabilidad liberar, ya que la estructura no se encargara de liberarla al borrar elementos.
+`arbol_buscar`: O(N), el peor caso sera cuando el arbol se degenere como una lista y halla que buscar un elemento al final, por lo que habra que recorrer todos los elementos.
+para un arbol balanceado la complejidad es O(logN)
 
-  Se añade el archivo **minipruebas.c** como ejemplo de implementacion de la libreria tanto como para verificar su correcto funcionamiento.
+`arbol_raiz`: O(1), devuelve el primer elemento, al que accede de manera directa, independiente del tamaño del arbol
 
-## Compilacion y Ejecution
+`arbol_vacio`: O(1), comprueba que exista el primer elemnto, al que accede de manera directa, independiente del tamaño del arbol 
 
-  Habiendo incluido la libreria en su programa o descargado el main.c proveido, puede compilarlo con la siguiente linea en la terminal :
-
-  ` gcc *.c -Wall -Werror -Wconversion -std=c99 -o nombre_programa `
-  > usaremos el compilador gcc nativo a cualquier distribucion linux para compilar todos los archivos c (\*.c)
-    en el directorio, empleando diversos *flags* para prevenir errores,
-    queda a discrecion del usuario elegir el nombre del programa
-
-  Luego puede ejecutar el programa con la siguiente linea:
-
-  `./nombre_programa`
-
-  Cabe aclarar que la terminal debe encontrarse en el directorio donde se encuentran los archivos del programa para poder llevar su compilacion y ejecucion a cabo.
-
-  Se recomienda  emplear un **makefile** para agilizar estas tareas.
-  Se añade en los archivos un makefile que nos permitira usar la linea `make run` que compilara (de ser necesario) y ejecutara el programa.
-  
----
-
-### Funcionamiento particular de la implementación
-
-En esta implementacion se opto por aprovechar la similitud entre los tres tipos de datos. Siendo la lista simplemente enlazada la esctructura con mas libertad de las tres, se tomo esta como base y se construyeron las funcionalidades de pila y cola sobre ellas.
-
-Otro punto que cabe destacar es que esta implementacion no hace uso de rutinas recursivas a favor de no producir errores de desbordamiento de pila ( tengase en cuenta que el compilador optado no presenta optimizacion por recursion en la cola ).
-
----
-
-## ¿Qué es lo que entendés por una lista? ¿Cuáles son las diferencias entre ser simple o doblemente enlazada?
-
-Este tipo de dato nos permite almacenar diferentes elementos de manera ordenada, acceder a ellos y eliminarlos de la estructura sin ninguna restriccion, es decir, podemos insertar, visualizar o eliminar un elemento de cualquier posicion.
-
-Teniendo en cuenta que una lista sera una cadena de nodos, donde un nodo es una estructura que contendra, por lo menos, el elemento o referencia al elemento que se quiere almacenar y una referencia al siguiente nodo.
-La diferencia entre una lista simplemente enlazada y una lista doblemente enlazada, es que en la primera cada nodo solo apunta al siguiente y en la segunda tambien apuntan al anterior.
-Esto hace que los tiempos de trabajo de una lista doblemente enlazada sean mejores cuando se quiere acceder a los nodos mas profundos( La complejidad de acceder a un elemento en cierta posicion en la primera es O(N) mientras que en la segunda O(N/2) ). Por otro lado la implementacion de una lista doblemente enlazada es mas comleja.
-Cabe aclarar que, segun la implementacion, los funcionamientos de pila y cola no se ven afectados por la inhabilidad de recorrer la lista en ambos sentidos.
-
-## ¿Cuáles son las características fundamentales de las Pilas? ¿Y de las Colas?
-
-**Pilas:** El primer elemento en entrar es el ultimo en salir. (LIFO)
-
-**Colas:** El primer elemento en entrar es el primero en salir. (FIFO) 
-
-## ¿Qué es un iterador? ¿Cuál es su función?
-
-Un iterador es una estructura que nos permite recorrer de manera secue un contenedor ( estructura que almacena datos ), de modo que podamos acceder a sus elementos. 
-Para el caso de una lista, este recorrido sera secuencial ( de inicio a fin ). 
-
-## ¿En qué se diferencia un iterador interno de uno externo?
-
-- Iterador Intero: El flujo de iteracion sera interno a la estructura, por lo que el usuario tiene un control limitado del proceso pero no necesita controlar el ciclo en el cual se recorre el mismo. Para ello normalmente un iterador interno en una lista es una funcion que recibira: la lista a iterar y una funcion que ejecutar para cada elemento que indicara si continuar la iteracion
-
-- Iterador Externo: es un tda que nos permitira controlar la iteracion mediante sus metodos. 
-  Un ejemplo de implementacion de iterador externo:
-  ```C
-    lista_iterador_t* it = NULL;
-
-    for(it = lista_iterador_crear(lista);
-        lista_iterador_tiene_siguiente(it);
-        lista_iterador_avanzar(it))
-        printf("%c ", *(char*)lista_iterador_elemento_actual(it));
-    printf("\n\n");
-
-    lista_iterador_destruir(it);
-  ```
+recorrer arbol: O(N), para recorrer el arbol debe pasar por cada uno de sus elementos
 
