@@ -1,7 +1,32 @@
 # Arbol Binario
 
+## Funcionamiento
+
+## Compilacion y Ejecution
+
+  Habiendo incluido la libreria en su programa o descargado el main.c proveido, puede compilarlo con la siguiente linea en la terminal :
+
+  ` gcc *.c -Wall -Werror -Wconversion -std=c99 -o nombre_programa `
+  > usaremos el compilador gcc nativo a cualquier distribucion linux para compilar todos los archivos c (\*.c)
+    en el directorio, empleando diversos *flags* para prevenir errores,
+    queda a discrecion del usuario elegir el nombre del programa
+
+  Luego puede ejecutar el programa con la siguiente linea:
+
+  `./nombre_programa`
+
+  Cabe aclarar que la terminal debe encontrarse en el directorio donde se encuentran los archivos del programa para poder llevar su compilacion y ejecucion a cabo.
+
+  Se recomienda  emplear un **makefile** para agilizar estas tareas.
+  Se añade en los archivos un makefile que nos permitira usar la linea `make run` que compilara (de ser necesario) y ejecutara el programa.
 
 ---
+
+## Explicar qué es un ABB y cómo se diferencia de un Árbol Binario.
+
+## Explicar cuál es el objetivo de tener una función de destrucción en el TDA y qué implicaría para el usuario no tenerla.
+
+## ¿Cuál es la complejidad de las diferentes operaciones del ABB? Justifique.
 
 ---
 
