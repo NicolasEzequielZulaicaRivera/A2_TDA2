@@ -166,6 +166,10 @@ int comparar_int(void* elemento1, void* elemento2){
     return -1;
   return 0;
 }
+bool acumular_int(void* num, void* extra ){
+  *(int*)extra += *(int*)num;
+  return 0;
+}
 
 void mostrar_cosas_inorder( nodo_abb_t* nodo ){
 
@@ -414,21 +418,81 @@ void pruebas_recorrido(){
       *array[9]==0
   ,"Recorrido Postorden ( Array Insuficiente ) ");
 
-  /*
-  for( size_t j = 0; j<10; j++ ){
-    printf("\n %lu: ",j);
-    for( int i=0; i<10; i++ ) array[i] = &num[0];
-    tamanio = arbol_recorrido_postorden( abb , (void**)array, j);
-    for( int i=0; i<10; i++ )
-      printf("%i ",*array[i]);
-  }
-  */
+  int n1=0,n2=0,n3=0;
+  size_t m1=0,m2=0,m3=0;
 
+  m1 = abb_con_cada_elemento( abb, ABB_RECORRER_INORDEN , acumular_int , &n1 );
+  m2 = abb_con_cada_elemento( abb, ABB_RECORRER_PREORDEN , acumular_int , &n2 );
+  m3 = abb_con_cada_elemento( abb, ABB_RECORRER_POSTORDEN , acumular_int , &n3 );
 
+  pa2m_afirmar(
+      m1==m2 && m2==m3 && m3==7 &&
+      n1==n2 && n2==n3 && n3==1+2+3+4+5+6+7
+  ,"abb_con_cada_elemento");
 
   arbol_destruir( abb );
 }
 
+void pruebas_arbol_vacio(){
+  abb_t* abb = arbol_crear(comparar_int, NULL);
+
+  int num = 0;
+
+  pa2m_afirmar(
+    arbol_borrar( abb, &num ) == -1 &&
+    !arbol_buscar( abb, &num ) &&
+    !arbol_raiz( abb ) &&
+    arbol_vacio( abb )
+  ,"operaciones basicas");
+
+  int* vec[10];
+  pa2m_afirmar(
+    !arbol_recorrido_inorden(abb,(void**)vec,10) &&
+    !arbol_recorrido_preorden(abb,(void**)vec,10) &&
+    !arbol_recorrido_postorden(abb,(void**)vec,10) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_INORDEN , acumular_int , &num ) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_PREORDEN , acumular_int , &num ) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_POSTORDEN , acumular_int , &num )
+  ,"operaciones de recorrido");
+
+  arbol_destruir( abb );
+}
+
+void pruebas_NULL(){
+  abb_t* abb = arbol_crear(comparar_int, NULL);
+
+  int num = 0;
+
+  pa2m_afirmar(
+    arbol_borrar( abb, NULL ) == -1 &&
+    !arbol_buscar( abb, NULL ) &&
+    arbol_borrar( NULL, &num ) == -1 &&
+    !arbol_buscar( NULL, &num ) &&
+    !arbol_raiz( NULL ) &&
+    arbol_vacio( NULL )
+  ,"operaciones basicas");
+
+  int* vec[10];
+  pa2m_afirmar(
+    !arbol_recorrido_inorden(abb,(void**)vec,0) &&
+    !arbol_recorrido_preorden(abb,(void**)vec,0) &&
+    !arbol_recorrido_postorden(abb,(void**)vec,0) &&
+    !arbol_recorrido_inorden(abb,NULL,10) &&
+    !arbol_recorrido_preorden(abb,NULL,10) &&
+    !arbol_recorrido_postorden(abb,NULL,10) &&
+    !arbol_recorrido_inorden(NULL,(void**)vec,10) &&
+    !arbol_recorrido_preorden(NULL,(void**)vec,10) &&
+    !arbol_recorrido_postorden(NULL,(void**)vec,10) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_INORDEN , NULL , &num ) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_PREORDEN , NULL , &num ) &&
+    !abb_con_cada_elemento( abb, ABB_RECORRER_POSTORDEN , NULL , &num ) &&
+    !abb_con_cada_elemento( NULL, ABB_RECORRER_INORDEN , acumular_int , &num ) &&
+    !abb_con_cada_elemento( NULL, ABB_RECORRER_PREORDEN , acumular_int , &num ) &&
+    !abb_con_cada_elemento( NULL, ABB_RECORRER_POSTORDEN , acumular_int , &num )
+  ,"operaciones de recorrido");
+
+  arbol_destruir( abb );
+}
 
 int main(int argc, char const *argv[]){
 
@@ -444,6 +508,12 @@ int main(int argc, char const *argv[]){
 
     pa2m_nuevo_grupo("PRUEBAS DE RECORRIDO");
     pruebas_recorrido();
+
+    pa2m_nuevo_grupo("PRUEBAS DE ARBOL VACIO");
+    pruebas_arbol_vacio();
+
+    pa2m_nuevo_grupo("PRUEBAS DE NULL");
+    pruebas_NULL();
   }
   printf("\n");
   return 0;

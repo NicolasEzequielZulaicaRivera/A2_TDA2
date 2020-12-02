@@ -31,7 +31,7 @@ int arbol_insertar_recursivo(abb_t* arbol, void* elemento, nodo_abb_t** nodo){
 
   if( !(*nodo) ){
     nodo_abb_t* nuevo_nodo = malloc( sizeof(nodo_abb_t) );
-    if( !nuevo_nodo ) return -FALLO;
+    if( !nuevo_nodo ) return FALLO;
     nuevo_nodo->elemento = elemento;
     nuevo_nodo->izquierda = nuevo_nodo->derecha = NULL;
     *nodo = nuevo_nodo;
@@ -170,6 +170,8 @@ void* arbol_buscar_recursivo(abb_t* arbol, void* elemento, nodo_abb_t* nodo  ){
 
 void* arbol_buscar(abb_t* arbol, void* elemento){
 
+  if( !arbol ) return NULL;
+  
   return arbol_buscar_recursivo( arbol, elemento, arbol->nodo_raiz );
 }
 
