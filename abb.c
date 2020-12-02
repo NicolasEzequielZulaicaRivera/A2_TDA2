@@ -50,15 +50,17 @@ int arbol_insertar(abb_t* arbol, void* elemento){
   return arbol_insertar_recursivo( arbol, elemento, &(arbol->nodo_raiz) );
 }
 
-// Borra un nodo cuyo elemento ya esta liberado
-void nodo_borrar( nodo_abb_t** nodo ){
-
+// Borra un nodo, que es una hoja, cuyo elemento ya esta liberado
+void nodo_borrar_hoja( nodo_abb_t** nodo ){
   nodo_abb_t* aux = (*nodo);
-  if( !(*nodo)->izquierda && !(*nodo)->derecha  ){
-    free( aux );
-    (*nodo) = NULL;
-    return;
-  }
+  free( aux );
+  (*nodo) = NULL;
+  return;
+}
+
+// Borra un nodo, que tiene un solo hijo, cuyo elemento ya esta liberado
+void nodo_borrar_simple( nodo_abb_t** nodo ){
+  nodo_abb_t* aux = (*nodo);
   if( !(*nodo)->izquierda  ){
     (*nodo) = aux->derecha;
     free(aux);
@@ -69,7 +71,11 @@ void nodo_borrar( nodo_abb_t** nodo ){
     free(aux);
     return;
   }
+}
 
+// Borra un nodo, que tiene dos hijos, cuyo elemento ya esta liberado
+void nodo_borrar_doble( nodo_abb_t** nodo ){
+  nodo_abb_t* aux = (*nodo);
   nodo_abb_t** sucesor = &(aux->izquierda);
 
   if( !(*sucesor)->derecha ){
@@ -86,7 +92,23 @@ void nodo_borrar( nodo_abb_t** nodo ){
   (*nodo)->izquierda = aux->izquierda;
   (*nodo)->derecha = aux->derecha;
   free(aux);
-  return;
+}
+
+// Borra un nodo cuyo elemento ya esta liberado
+void nodo_borrar( nodo_abb_t** nodo ){
+
+
+  if( !(*nodo)->izquierda && !(*nodo)->derecha  ){
+    nodo_borrar_hoja(nodo);
+    return;
+  }
+
+  if( !(*nodo)->izquierda || !(*nodo)->derecha  ){
+    nodo_borrar_simple(nodo);
+    return;
+  }
+
+  nodo_borrar_doble(nodo);
 
 }
 /*
