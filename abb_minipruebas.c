@@ -237,8 +237,8 @@ void pruebas_funcionamiento(){
 
   pa2m_afirmar(arbol_vacio(abb),"arbol_vacio (vacio)");
 
-  int num[10];
-  for(int i=0;i<10;i++) num[i]=i;
+  int num[15];
+  for(int i=0;i<15;i++) num[i]=i;
 
   arbol_insertar( abb, &num[4] );//      4      |
   arbol_insertar( abb, &num[2] );//    /  \     |
@@ -300,6 +300,29 @@ void pruebas_funcionamiento(){
 
 
   pa2m_afirmar(correcto,"buscar elementos tras borrar");
+
+  //arbol_borrar( abb, &num[4] );           3         |
+  //arbol_borrar( abb, &num[2] );         /  \        |
+  //arbol_borrar( abb, &num[7] );        1   6        |
+  //arbol_borrar( abb, &num[0] );       /\  / \       |
+  //arbol_insertar( abb, &num[2] );    0 2 5   8      |
+  arbol_insertar( abb, &num[8] );//       \   / \     |
+  arbol_insertar( abb, &num[7] );//        4 7  10    |
+  arbol_insertar( abb, &num[10] );//           /      |
+  arbol_insertar( abb, &num[9] );//           9       |
+  arbol_insertar( abb, &num[4] );//                   |
+  arbol_insertar( abb, &num[0] );//                   |
+
+  // elementos que deben estar
+  for(int i=0;i<=10;i++){
+    aux = arbol_buscar( abb, &num[i] );
+    if( aux ) correcto = correcto && !abb->comparador( aux, &num[i] );
+    else correcto = false;
+    //arbol_borrar( abb, aux );
+  }
+  correcto = correcto && arbol_vacio(abb);
+
+  pa2m_afirmar(correcto,"buscar elementos (extra)");
 
   arbol_destruir( abb );
 }
