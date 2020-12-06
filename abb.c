@@ -157,13 +157,11 @@ void* arbol_buscar_recursivo(abb_t* arbol, void* elemento, nodo_abb_t* nodo  ){
 
   int comparacion = (arbol->comparador)( elemento, nodo->elemento );
 
-  switch (comparacion) {
-    case 0: return nodo->elemento;
+  if( !comparacion ) return nodo->elemento;
 
-    case 1: return arbol_buscar_recursivo( arbol, elemento, nodo->derecha );
+  if( comparacion > 0 ) return arbol_buscar_recursivo( arbol, elemento, nodo->derecha );
 
-    case -1: return arbol_buscar_recursivo( arbol, elemento, nodo->izquierda );
-  }
+  if( comparacion < 0 ) return arbol_buscar_recursivo( arbol, elemento, nodo->izquierda );
 
   return NULL;
 }
@@ -314,6 +312,7 @@ void nodo_destruir(abb_t* arbol, nodo_abb_t* nodo){
 }
 
 void arbol_destruir(abb_t* arbol){
+  if(!arbol)return;
   nodo_destruir( arbol , arbol->nodo_raiz );
   free(arbol);
   return;

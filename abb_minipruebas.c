@@ -9,9 +9,15 @@ typedef struct cosa{
 }cosa;
 
 cosa* crear_cosa(int clave){
+
+    //static int count = 0;
+    char aux [50];
+    sprintf(aux,"CONT %i",clave);
     cosa* c = (cosa*)malloc(sizeof(cosa));
-    if(c)
+    if(c){
         c->clave = clave;
+        strcpy( c->contenido , aux );
+    }
     return c;
 }
 
@@ -23,9 +29,9 @@ int comparar_cosas(void* elemento1, void* elemento2){
         return 0;
 
     if(((cosa*)elemento1)->clave>((cosa*)elemento2)->clave)
-        return 1;
+        return 10;
     if(((cosa*)elemento1)->clave<((cosa*)elemento2)->clave)
-        return -1;
+        return -10;
     return 0;
 }
 void destructor_de_cosas(void* elemento){
@@ -314,11 +320,11 @@ void pruebas_funcionamiento(){
   arbol_insertar( abb, &num[0] );//                   |
 
   // elementos que deben estar
-  for(int i=0;i<=10;i++){
+  for(int i=10;i>=0;i--){
     aux = arbol_buscar( abb, &num[i] );
     if( aux ) correcto = correcto && !abb->comparador( aux, &num[i] );
     else correcto = false;
-    //arbol_borrar( abb, aux );
+    arbol_borrar( abb, aux );
   }
   correcto = correcto && arbol_vacio(abb);
 
@@ -481,10 +487,57 @@ void pruebas_arbol_vacio(){
   arbol_destruir( abb );
 }
 
+void pruebas_busqueda(){
+  abb_t* abb = arbol_crear(comparar_cosas, destructor_de_cosas);
+
+  cosa* elem[100];
+  for( int i = 0; i<100 ; i++ ) elem[i]=crear_cosa(i);
+
+  for( int i = 0; i<5 ; i++ )
+    arbol_insertar(abb, crear_cosa(5) );
+  for( int i = 0; i<5 ; i++ )
+    arbol_insertar(abb, crear_cosa(10) );
+  for( int i = 0; i<5 ; i++ )
+    arbol_insertar(abb, crear_cosa(0) );
+
+  arbol_insertar(abb, crear_cosa(50) );
+  arbol_insertar(abb, crear_cosa(0) );
+  arbol_insertar(abb, crear_cosa(40) );
+  arbol_insertar(abb, crear_cosa(1) );
+  arbol_insertar(abb, crear_cosa(30) );
+  arbol_insertar(abb, crear_cosa(2) );
+  arbol_insertar(abb, crear_cosa(20) );
+
+  for( int i = 0; i<100 ; i=i+5 )
+    arbol_insertar(abb, crear_cosa(i) );
+  for( int i = 0; i<100 ; i=i+3 )
+    arbol_insertar(abb, crear_cosa(i) );
+  for( int i = 0; i<100 ; i=i+2 )
+    arbol_insertar(abb, crear_cosa(i) );
+
+  for( int i = 0; i<100 ; i++ ){
+
+    if( arbol_buscar(abb,elem[i]) ){
+      if( comparar_cosas( elem[i], arbol_buscar(abb,elem[i]) ) ){
+        printf("UF [- %i -]\n",i);
+      }else{
+        printf("%s - %s \t ", elem[i]->contenido, ((cosa*)arbol_buscar(abb,elem[i]))->contenido );
+      }
+    }
+  }
+
+
+  for( int i = 0; i<100 ; i++ ) destruir_cosa(elem[i]);
+
+  arbol_destruir(abb);
+}
+
 void pruebas_NULL(){
   abb_t* abb = arbol_crear(comparar_int, NULL);
 
   int num = 0;
+
+  arbol_destruir(NULL);
 
   pa2m_afirmar(
     arbol_borrar( abb, NULL ) == -1 &&
@@ -537,6 +590,9 @@ int main(int argc, char const *argv[]){
 
     pa2m_nuevo_grupo("PRUEBAS DE NULL");
     pruebas_NULL();
+
+    //pa2m_nuevo_grupo("PRUEBAS DE BUSQUEDA");
+    //pruebas_busqueda();
   }
   printf("\n");
   return 0;
